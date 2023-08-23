@@ -77,6 +77,10 @@ public class TestPractice {
         driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(5));
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
 
+        WebElement lastTableElement = driver.findElement(By.xpath("//tbody/tr[last()]/th"));
+        int lastTableElemId = Integer.parseInt(lastTableElement.getText());
+
+
         WebElement addGoodsButton = driver.findElement(By.xpath(
                 "//button[@class='btn btn-primary' and text()='Добавить']"));
         addGoodsButton.click();
@@ -134,17 +138,23 @@ public class TestPractice {
         }
 
 //        Проверяем корректность отображение добавленного товара
+        WebElement newGoodId = driver.findElement(By.xpath("//tbody/tr[last()]/th"));
         WebElement newGoodName = driver.findElement(By.xpath(
                 "//tbody/tr/td[text()='Яблоко-кажу (от порт1. Сaju*)']"));
         WebElement newGoodType = driver.findElement(By.xpath("//tbody/tr/td[text()='Фрукт']"));
         WebElement newGoodExoticBool = driver.findElement(By.xpath("//tbody/tr/td[text()='true']"));
 
+//        Новый айдишник для проверки к добавленному товару.
+        String newLastId = String.valueOf(lastTableElemId + 1);
+
+        Assertions.assertEquals(newLastId, newGoodId.getText(), "Некорректный id добавленного товара.");
         // Не знаю сколько смысла в этих проверках, если это дублирует то что в xpath
         Assertions.assertEquals(
                 "Яблоко-кажу (от порт1. Сaju*)", newGoodName.getText(),
                 "Не соответсвие названия добавленного товара");
-        Assertions.assertEquals("Фрукт", newGoodType.getText(), "error");
-        Assertions.assertEquals("true", newGoodExoticBool.getText(), "error");
+        Assertions.assertEquals("Фрукт", newGoodType.getText(), "Некорректный тип фрукта");
+        Assertions.assertEquals("true", newGoodExoticBool.getText(), "Некорректный тип экзотичности.");
+
 
 
 
