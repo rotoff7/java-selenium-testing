@@ -2,6 +2,7 @@ package testsFolder;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -9,6 +10,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.NoSuchElementException;
+
+import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -26,13 +29,16 @@ public class TestPractice {
         System.setProperty("webdriver.chrome.driver", "src/test/resources/chromedriver.exe");
         driver = new ChromeDriver(co);
 
+        driver.get("http://localhost:8080/food");
+        driver.manage().window().maximize();
+
     }
 
     @Test
     void firstTest() {
 
-        driver.get("http://localhost:8080/food");
-        driver.manage().window().maximize();
+        driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(5));
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
 
 //        Попробовал отловить ошибку (только для самой таблицы).
         try {
@@ -41,6 +47,8 @@ public class TestPractice {
             System.out.println("Элемент не найден");
             fail("Table not found");
         }
+
+//        Проверяем наличие элементов и соответсвие наименований.
         WebElement idColumn = driver.findElement(By.xpath("//tr/th[text()='#']"));
         WebElement nameColumn = driver.findElement(By.xpath("//tr/th[text()='Наименование']"));
         WebElement typeColumn = driver.findElement(By.xpath("//tr/th[text()='Тип']"));
@@ -53,7 +61,7 @@ public class TestPractice {
         String borderColor = addGoodsButton.getCssValue("border-color");
 
 //        Проверяем соответствие цвета
-        if (backgroundColor.equals("rgba(0, 123, 255, 1)") && borderColor.equals("rgb(0, 123, 255)")){
+        if (backgroundColor.equals("rgba(0, 123, 255, 1)") && borderColor.equals("rgb(0, 123, 255)")) {
             System.out.println("Button color is correct");
         } else {
             fail("Wrong button color");
