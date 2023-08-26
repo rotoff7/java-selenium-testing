@@ -58,15 +58,15 @@ public class TestPractice extends BaseTest {
 //        В тз указано, что модальное окно именно "Добавление товаров", но чтоб не фэйлить тест подправил на "товара".
         Assertions.assertEquals("Добавление товара", modalWindowTitle, "Wrong modalWindowTitle");
 
-        WebElement nameInputField = driver.findElement(By.xpath("//input[@id='name']"));
+        WebElement nameInputField = driver.findElement(By.id("name"));
         nameInputField.sendKeys("Яблоко-кажу (от порт1. Сaju*)");
-        WebElement typeSelectDrop = driver.findElement(By.xpath("//select[@id='type']"));
+        WebElement typeSelectDrop = driver.findElement(By.id("type"));
         typeSelectDrop.click();
-        driver.findElement(By.xpath("//select[@id='type']/option[@value='FRUIT']")).click();
+        driver.findElement(By.xpath("//option[@value='FRUIT']")).click();
         //Добавил еше раз, поскольку список продолжал быть открытым.
         typeSelectDrop.click();
         driver.findElement(By.id("exotic")).click();
-        driver.findElement(By.xpath("//button[@id='save']")).click();
+        driver.findElement(By.id("save")).click();
         // Проверка закрытия МО
         try {
             Boolean modalWinowCloseCheck = wait.until(ExpectedConditions.invisibilityOfElementLocated(
